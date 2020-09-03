@@ -15,6 +15,15 @@ func Uint16(inp string) (string, []byte) {
 	return "", nil
 }
 
+// Int8 parses an int8 literal
+func Int8(inp string) (string, []byte) {
+	i, err := strconv.ParseInt(inp, 0, 8)
+	if err == nil {
+		return "true", []byte{byte(int8(i))}
+	}
+	return "", nil
+}
+
 // Uint8 parses a uint8 literal
 func Uint8(inp string) (string, []byte) {
 	i, err := strconv.ParseUint(inp, 0, 8)

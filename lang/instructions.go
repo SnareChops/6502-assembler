@@ -115,7 +115,7 @@ const TYA = `TYA`
 const TSX = `TSX`
 
 // TXS Transfer Index X to Stack Pointer
-const TXS = `TSX`
+const TXS = `TXS`
 
 // PHA Push Accumulator on Stack
 const PHA = `PHA`

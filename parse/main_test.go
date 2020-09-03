@@ -8,23 +8,23 @@ import (
 )
 
 func TestLine(t *testing.T) {
-	result := parse.Line("label:")
+	result := parse.Line("label:", 0)
 	require.Len(t, result, 0)
 
-	result = parse.Line("  other:    ")
+	result = parse.Line("  other:    ", 0)
 	require.Len(t, result, 0)
 
-	result = parse.Line("LDA $0xff12")
+	result = parse.Line("LDA $0xff12", 0)
 	require.Len(t, result, 3)
 
-	result = parse.Line("  LDA $0xff12    ")
+	result = parse.Line("  LDA $0xff12    ", 0)
 	require.Len(t, result, 3)
 
-	result = parse.Line("")
+	result = parse.Line("", 0)
 	require.Len(t, result, 0)
 
-	result = parse.Line("// comment")
+	result = parse.Line("// comment", 0)
 	require.Len(t, result, 0)
 
-	require.Panics(t, func() { parse.Line("sfoksdf wefoh sdf") }, 0)
+	require.Panics(t, func() { parse.Line("sfoksdf wefoh sdf", 0) }, 0)
 }

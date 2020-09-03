@@ -32,4 +32,6 @@ func TestLabel(t *testing.T) {
 	require.False(t, match)
 	require.NotNil(t, err)
 	require.Equal(t, "Label must start with a letter '222'", fmt.Sprint(err))
+
+	parse.ClearLabels()
 }

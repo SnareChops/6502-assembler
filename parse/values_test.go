@@ -207,3 +207,50 @@ func TestZPIY(t *testing.T) {
 	match, result = parse.ZPIY("(255),y")
 	require.Empty(t, match)
 }
+
+func TestR(t *testing.T) {
+	match, result := parse.R("$12")
+	require.Equal(t, `R`, match)
+	require.Equal(t, []byte{0x0c}, result)
+
+	match, result = parse.R("$0x40")
+	require.Equal(t, `R`, match)
+	require.Equal(t, []byte{0x40}, result)
+
+	match, result = parse.R("$127")
+	require.Equal(t, `R`, match)
+	require.Equal(t, []byte{0x7f}, result)
+
+	match, result = parse.R("$-128")
+	require.Equal(t, `R`, match)
+	require.Equal(t, []byte{0x80}, result)
+
+	match, result = parse.R("$128")
+	require.Empty(t, match)
+
+	match, result = parse.R("26")
+	require.Empty(t, match)
+
+	match, result = parse.R("$'c'")
+	require.Empty(t, match)
+
+	match, result = parse.R("")
+	require.Empty(t, match)
+}
+
+func TestAI(t *testing.T) {
+	match, result := parse.AI("($1234)")
+	require.Equal(t, `AI`, match)
+	require.Equal(t, []byte{0xd2, 0x04}, result)
+
+	match, result = parse.AI("($65535)")
+	require.Equal(t, `AI`, match)
+	require.Equal(t, []byte{0xff, 0xff}, result)
+
+	match, result = parse.AI("($0xff12)")
+	require.Equal(t, `AI`, match)
+	require.Equal(t, []byte{0x12, 0xff}, result)
+
+	match, result = parse.AI("(1234)")
+	require.Empty(t, match)
+}

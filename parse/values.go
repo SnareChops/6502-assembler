@@ -96,3 +96,24 @@ func ZPIY(inp string) (string, []byte) {
 	}
 	return "", nil
 }
+
+// R parses a relative value
+func R(inp string) (string, []byte) {
+	if match := Submatch(inp, `^\$(.+)$`); match != nil {
+		println(match)
+		if valid, value := Int8(match[1]); valid != "" {
+			return lang.R, value
+		}
+	}
+	return "", nil
+}
+
+// AI parses an Absolute Indirect value
+func AI(inp string) (string, []byte) {
+	if match := Submatch(inp, `^\((.+)\)$`); match != nil {
+		if valid, value := A(match[1]); valid != "" {
+			return lang.AI, value
+		}
+	}
+	return "", nil
+}

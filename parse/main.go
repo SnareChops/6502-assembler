@@ -12,7 +12,7 @@ func File(file *os.File) ([]byte, error) {
 	scanner := bufio.NewScanner(file)
 	data := []byte{}
 	for scanner.Scan() {
-		data = append(data, Line(scanner.Text())...)
+		data = append(data, Line(scanner.Text(), uint16(len(data)))...)
 	}
 	if err := scanner.Err(); err != nil {
 		return nil, err
@@ -20,10 +20,8 @@ func File(file *os.File) ([]byte, error) {
 	return data, nil
 }
 
-var pointer uint16 = 0
-
 // Line parses a line of code
-func Line(inp string) []byte {
+func Line(inp string, pointer uint16) []byte {
 	// Trim the string
 	inp = strings.TrimSpace(inp)
 
@@ -47,8 +45,7 @@ func Line(inp string) []byte {
 	}
 
 	// Parse any instructions
-	if inst, result := Either(inp, LDA, LDX, LDY, STA, STX, STY); inst != "" {
-		pointer++
+	if inst, result := Either(inp, Instructions...); inst != "" {
 		return result
 	}
 
