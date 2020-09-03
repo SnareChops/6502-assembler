@@ -1,40 +1,35 @@
 package parse
 
+import (
+	"github.com/snarechops/assembler/lang"
+)
+
 // LDA parses an LDA instruction
-func LDA(inp string) (bool, []byte) {
-	return instruction(inp, LDA, `(?i)^LDA\s+(.+)`, ZP, ZPX, AX, AY, A, I, ZPIX, ZPIY)
-}
+var LDA Parser = inst(lang.LDA, ZP, ZPX, AX, AY, A, I, ZPIX, ZPIY)
 
 // LDX parses an LDX instruction
-func LDX(inp string) (bool, []byte) {
-	return instruction(inp, LDX, `(?i)^LDX\s+(.*)`, ZP, ZPY, AY, A, I)
-}
+var LDX Parser = inst(lang.LDX, ZP, ZPY, AY, A, I)
 
 // LDY parses an LDY instruction
-func LDY(inp string) (bool, []byte) {
-	return instruction(inp, LDY, `(?i)^LDY\s+(.*)`, ZP, ZPX, AX, A, I)
-}
+var LDY Parser = inst(lang.LDY, ZP, ZPX, AX, A, I)
 
 // STA parses an STA instruction
-func STA(inp string) (bool, []byte) {
-	return instruction(inp, STA, `(?i)^STA\s+(.*)`, ZP, ZPX, AX, AY, A, ZPIX, ZPIY)
-}
+var STA Parser = inst(lang.STA, ZP, ZPX, AX, AY, A, ZPIX, ZPIY)
 
 // STX parses an STX instruction
-func STX(inp string) (bool, []byte) {
-	return instruction(inp, STX, `(?i)^STX\s+(.*)`, ZP, ZPY, A)
-}
+var STX Parser = inst(lang.STX, ZP, ZPY, A)
 
 // STY parses an STY instruction
-func STY(inp string) (bool, []byte) {
-	return instruction(inp, STY, `(?i)^STY\s+(.*)`, ZP, ZPX, A)
-}
+var STY Parser = inst(lang.STY, ZP, ZPX, A)
 
-func instruction(inp string, inst Parser, regex string, parsers ...Parser) (bool, []byte) {
-	if match := Submatch(inp, regex); match != nil {
-		if valid, mode, value := Either(match[1], parsers); valid {
-			return true, append(Opcode(inst, mode), value...)
+func inst(acronym string, parsers ...Parser) Parser {
+	matcher := Matcher("(?i)^" + acronym + "\\s+([\\w$,()]*)(?:\\s*//)*")
+	return func(inp string) (string, []byte) {
+		if match := matcher(inp); match != nil {
+			if mode, value := Either(match[1], parsers...); mode != "" {
+				return acronym, append(lang.Opcode(acronym, mode), value...)
+			}
 		}
+		return "", nil
 	}
-	return false, nil
 }

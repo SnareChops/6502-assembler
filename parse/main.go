@@ -2,7 +2,9 @@ package parse
 
 import (
 	"bufio"
+	"fmt"
 	"os"
+	"strings"
 )
 
 // File parses a file
@@ -22,6 +24,19 @@ var pointer uint16 = 0
 
 // Line parses a line of code
 func Line(inp string) []byte {
+	// Trim the string
+	inp = strings.TrimSpace(inp)
+
+	// Skip empty lines
+	if len(inp) == 0 {
+		return []byte{}
+	}
+
+	// Skip comments
+	if Comment(inp) {
+		return []byte{}
+	}
+
 	// Parse any labels
 	match, err := Label(inp, pointer)
 	if err != nil {
@@ -32,9 +47,10 @@ func Line(inp string) []byte {
 	}
 
 	// Parse any instructions
-	if match, _, result := Either(inp, []Parser{LDA, LDX, LDY}); match {
+	if inst, result := Either(inp, LDA, LDX, LDY, STA, STX, STY); inst != "" {
 		pointer++
 		return result
 	}
-	return []byte{}
+
+	panic(fmt.Errorf("Invalid line '%s'", inp))
 }

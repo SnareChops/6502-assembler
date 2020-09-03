@@ -1,92 +1,98 @@
 package parse
 
+import (
+	"github.com/snarechops/assembler/lang"
+)
+
 // Parser represents a parser function
-type Parser = func(string) (bool, []byte)
+type Parser = func(string) (string, []byte)
 
 // A parses an absolute memory address
-func A(inp string) (bool, []byte) {
+func A(inp string) (string, []byte) {
 	if match := Submatch(inp, `^\$(.+)`); match != nil {
-		if valid, value := Uint16(match[1]); valid {
-			return true, value
+		if valid, value := Uint16(match[1]); valid == "true" {
+			return lang.A, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
 
 // I parses an immediate literal value
-func I(inp string) (bool, []byte) {
-	valid, _, value := Either(inp, []Parser{Char, Uint8, Uint16})
-	return valid, value
+func I(inp string) (string, []byte) {
+	if valid, value := Either(inp, Char, Uint8, Uint16); valid == "true" {
+		return lang.I, value
+	}
+	return "", nil
 }
 
 // AX parses an absolute with x value
 // ex: $1234,x
-func AX(inp string) (bool, []byte) {
+func AX(inp string) (string, []byte) {
 	if match := Submatch(inp, `(?i)^\$(.+),x$`); match != nil {
-		if valid, value := Uint16(match[1]); valid {
-			return true, value
+		if valid, value := Uint16(match[1]); valid == "true" {
+			return lang.AX, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
 
 // AY parses an absolute with y value
 // ex: $1234,y
-func AY(inp string) (bool, []byte) {
+func AY(inp string) (string, []byte) {
 	if match := Submatch(inp, `(?i)^\$(.+),y$`); match != nil {
-		if valid, value := Uint16(match[1]); valid {
-			return true, value
+		if valid, value := Uint16(match[1]); valid == "true" {
+			return lang.AY, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
 
 // ZP parses a zero page address
-func ZP(inp string) (bool, []byte) {
+func ZP(inp string) (string, []byte) {
 	if match := Submatch(inp, `^\$(.+)$`); match != nil {
-		if valid, value := Uint8(match[1]); valid {
-			return true, value
+		if valid, value := Uint8(match[1]); valid == "true" {
+			return lang.ZP, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
 
 // ZPX parses a zero paged with x address
-func ZPX(inp string) (bool, []byte) {
+func ZPX(inp string) (string, []byte) {
 	if match := Submatch(inp, `^(.+),x$`); match != nil {
-		if valid, value := ZP(match[1]); valid {
-			return true, value
+		if valid, value := ZP(match[1]); valid != "" {
+			return lang.ZPX, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
 
 // ZPY parses a zero paged with y address
-func ZPY(inp string) (bool, []byte) {
+func ZPY(inp string) (string, []byte) {
 	if match := Submatch(inp, `^(.+),y$`); match != nil {
-		if valid, value := ZP(match[1]); valid {
-			return true, value
+		if valid, value := ZP(match[1]); valid != "" {
+			return lang.ZPY, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
 
 // ZPIX parses a zero page indirect indexed with x address
-func ZPIX(inp string) (bool, []byte) {
+func ZPIX(inp string) (string, []byte) {
 	if match := Submatch(inp, `^\((.+),x\)$`); match != nil {
-		if valid, value := ZP(match[1]); valid {
-			return true, value
+		if valid, value := ZP(match[1]); valid != "" {
+			return lang.ZPIX, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
 
 // ZPIY parses a zero page indirect indexed with y address
-func ZPIY(inp string) (bool, []byte) {
+func ZPIY(inp string) (string, []byte) {
 	if match := Submatch(inp, `^\((.+)\),y$`); match != nil {
-		if valid, value := ZP(match[1]); valid {
-			return true, value
+		if valid, value := ZP(match[1]); valid != "" {
+			return lang.ZPIY, value
 		}
 	}
-	return false, nil
+	return "", nil
 }
