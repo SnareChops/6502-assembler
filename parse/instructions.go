@@ -179,6 +179,7 @@ func inst(acronym string, parsers ...Parser) Parser {
 	matcher := Matcher("(?i)^" + acronym + "\\s+([\\w$,()]*)(?:\\s*//.*)*$")
 	return func(inp string) (string, []byte) {
 		if match := matcher(inp); match != nil {
+			match[1] = ReplaceFromLabel(match[1])
 			if mode, value := Either(match[1], parsers...); mode != "" {
 				return acronym, append(lang.Opcode(acronym, mode), value...)
 			}

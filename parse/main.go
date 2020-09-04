@@ -35,6 +35,19 @@ func Line(inp string, pointer uint16) []byte {
 		return []byte{}
 	}
 
+	if file := Include(inp); file != "" {
+		f, err := os.Open(file)
+		if err != nil {
+			panic(err)
+		}
+		bytes, err := File(f)
+		if err != nil {
+			panic(err)
+		}
+		f.Close()
+		return bytes
+	}
+
 	// Parse any labels
 	match, err := Label(inp, pointer)
 	if err != nil {

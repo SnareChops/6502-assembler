@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"strings"
 	"unicode"
-
-	"github.com/snarechops/assembler/conv"
 )
 
-var labels = map[string][]byte{}
+var labels = map[string]string{}
 
 // Label parses a label
 func Label(inp string, line uint16) (bool, error) {
@@ -16,21 +14,30 @@ func Label(inp string, line uint16) (bool, error) {
 		if err := validateLabel(strings.ToLower(match[1])); err != nil {
 			return false, err
 		}
-		labels[strings.ToLower(match[1])] = conv.Uint16(line)
+		labels[strings.ToLower(match[1])] = fmt.Sprintf("$%d", line)
 		return true, nil
 	}
 	return false, nil
 }
 
 // GetLabel returns a stored label address
-func GetLabel(label string) []byte {
+func GetLabel(label string) string {
 	return labels[strings.ToLower(label)]
+}
+
+// ReplaceFromLabel returns the address of the label
+// or returns the inputted string if not found
+func ReplaceFromLabel(label string) string {
+	if val := labels[strings.ToLower(label)]; val != "" {
+		return val
+	}
+	return label
 }
 
 // ClearLabels clears all label addresses
 // Mostly only used for testing and debuging purposes
 func ClearLabels() {
-	labels = map[string][]byte{}
+	labels = map[string]string{}
 }
 
 func validateLabel(label string) error {
@@ -38,7 +45,7 @@ func validateLabel(label string) error {
 		return fmt.Errorf("Label must start with a letter '%s'", label)
 	}
 
-	if labels[label] != nil {
+	if labels[label] != "" {
 		return fmt.Errorf("Duplicate label '%s'", label)
 	}
 	return nil
