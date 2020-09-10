@@ -25,9 +25,9 @@ func TestA(t *testing.T) {
 }
 
 func TestI(t *testing.T) {
-	match, result := parse.I("1234")
+	match, result := parse.I("12")
 	require.Equal(t, `I`, match)
-	require.Equal(t, []byte{0xd2, 0x04}, result)
+	require.Equal(t, []byte{0x0c}, result)
 
 	match, result = parse.I("'c'")
 	require.Equal(t, `I`, match)

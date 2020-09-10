@@ -19,7 +19,7 @@ func A(inp string) (string, []byte) {
 
 // I parses an immediate literal value
 func I(inp string) (string, []byte) {
-	if valid, value := Either(inp, Char, Uint8, Uint16); valid == "true" {
+	if valid, value := Either(inp, Char, Uint8); valid == "true" {
 		return lang.I, value
 	}
 	return "", nil

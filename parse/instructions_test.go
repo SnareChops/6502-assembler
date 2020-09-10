@@ -40,9 +40,9 @@ func TestLDA(t *testing.T) {
 	require.Equal(t, `LDA`, match)
 	require.Equal(t, []byte{0xb9, 0x12, 0xff}, result)
 
-	match, result = parse.LDA("LDA 0xff12")
+	match, result = parse.LDA("LDA 0x12")
 	require.Equal(t, `LDA`, match)
-	require.Equal(t, []byte{0xa9, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0xa9, 0x12}, result)
 }
 
 func TestLDX(t *testing.T) {
@@ -54,9 +54,9 @@ func TestLDX(t *testing.T) {
 	require.Equal(t, `LDX`, match)
 	require.Equal(t, []byte{0xbe, 0x12, 0xff}, result)
 
-	match, result = parse.LDX("LDX 0xff12")
+	match, result = parse.LDX("LDX 0x12")
 	require.Equal(t, `LDX`, match)
-	require.Equal(t, []byte{0xa2, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0xa2, 0x12}, result)
 
 	match, result = parse.LDX("LDX $12")
 	require.Equal(t, `LDX`, match)
@@ -76,9 +76,9 @@ func TestLDY(t *testing.T) {
 	require.Equal(t, `LDY`, match)
 	require.Equal(t, []byte{0xbc, 0x12, 0xff}, result)
 
-	match, result = parse.LDY("LDY 0xff12")
+	match, result = parse.LDY("LDY 0x12")
 	require.Equal(t, `LDY`, match)
-	require.Equal(t, []byte{0xa0, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0xa0, 0x12}, result)
 
 	match, result = parse.LDY("LDY $12")
 	require.Equal(t, `LDY`, match)
@@ -160,9 +160,9 @@ func TestADC(t *testing.T) {
 	require.Equal(t, `ADC`, match)
 	require.Equal(t, []byte{0x79, 0x12, 0xff}, result)
 
-	match, result = parse.ADC("ADC 0xff12")
+	match, result = parse.ADC("ADC 0x12")
 	require.Equal(t, `ADC`, match)
-	require.Equal(t, []byte{0x69, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0x69, 0x12}, result)
 
 	match, result = parse.ADC("ADC $12")
 	require.Equal(t, `ADC`, match)
@@ -194,9 +194,9 @@ func TestSBC(t *testing.T) {
 	require.Equal(t, `SBC`, match)
 	require.Equal(t, []byte{0xf9, 0x12, 0xff}, result)
 
-	match, result = parse.SBC("SBC 0xff12")
+	match, result = parse.SBC("SBC 0x12")
 	require.Equal(t, `SBC`, match)
-	require.Equal(t, []byte{0xe9, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0xe9, 0x12}, result)
 
 	match, result = parse.SBC("SBC $12")
 	require.Equal(t, `SBC`, match)
@@ -376,9 +376,9 @@ func TestAND(t *testing.T) {
 	require.Equal(t, `AND`, match)
 	require.Equal(t, []byte{0x39, 0x12, 0xff}, result)
 
-	match, result = parse.AND("AND 0xff12")
+	match, result = parse.AND("AND 0x12")
 	require.Equal(t, `AND`, match)
-	require.Equal(t, []byte{0x29, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0x29, 0x12}, result)
 
 	match, result = parse.AND("AND $12")
 	require.Equal(t, `AND`, match)
@@ -410,9 +410,9 @@ func TestORA(t *testing.T) {
 	require.Equal(t, `ORA`, match)
 	require.Equal(t, []byte{0x19, 0x12, 0xff}, result)
 
-	match, result = parse.ORA("ORA 0xff12")
+	match, result = parse.ORA("ORA 0x12")
 	require.Equal(t, `ORA`, match)
-	require.Equal(t, []byte{0x09, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0x09, 0x12}, result)
 
 	match, result = parse.ORA("ORA $12")
 	require.Equal(t, `ORA`, match)
@@ -444,9 +444,9 @@ func TestXOR(t *testing.T) {
 	require.Equal(t, `XOR`, match)
 	require.Equal(t, []byte{0x59, 0x12, 0xff}, result)
 
-	match, result = parse.XOR("XOR 0xff12")
+	match, result = parse.XOR("XOR 0x12")
 	require.Equal(t, `XOR`, match)
-	require.Equal(t, []byte{0x49, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0x49, 0x12}, result)
 
 	match, result = parse.XOR("XOR $12")
 	require.Equal(t, `XOR`, match)
@@ -478,9 +478,9 @@ func TestCMP(t *testing.T) {
 	require.Equal(t, `CMP`, match)
 	require.Equal(t, []byte{0xd9, 0x12, 0xff}, result)
 
-	match, result = parse.CMP("CMP 0xff12")
+	match, result = parse.CMP("CMP 0x12")
 	require.Equal(t, `CMP`, match)
-	require.Equal(t, []byte{0xc9, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0xc9, 0x12}, result)
 
 	match, result = parse.CMP("CMP $12")
 	require.Equal(t, `CMP`, match)
@@ -504,9 +504,9 @@ func TestCPX(t *testing.T) {
 	require.Equal(t, `CPX`, match)
 	require.Equal(t, []byte{0xec, 0x12, 0xff}, result)
 
-	match, result = parse.CPX("CPX 0xff12")
+	match, result = parse.CPX("CPX 0x12")
 	require.Equal(t, `CPX`, match)
-	require.Equal(t, []byte{0xe0, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0xe0, 0x12}, result)
 
 	match, result = parse.CPX("CPX $12")
 	require.Equal(t, `CPX`, match)
@@ -518,9 +518,9 @@ func TestCPY(t *testing.T) {
 	require.Equal(t, `CPY`, match)
 	require.Equal(t, []byte{0xcc, 0x12, 0xff}, result)
 
-	match, result = parse.CPY("CPY 0xff12")
+	match, result = parse.CPY("CPY 0x12")
 	require.Equal(t, `CPY`, match)
-	require.Equal(t, []byte{0xc0, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0xc0, 0x12}, result)
 
 	match, result = parse.CPY("CPY $12")
 	require.Equal(t, `CPY`, match)
@@ -532,9 +532,9 @@ func TestBIT(t *testing.T) {
 	require.Equal(t, `BIT`, match)
 	require.Equal(t, []byte{0x2c, 0x12, 0xff}, result)
 
-	match, result = parse.BIT("BIT 0xff12")
+	match, result = parse.BIT("BIT 0x12")
 	require.Equal(t, `BIT`, match)
-	require.Equal(t, []byte{0x89, 0x12, 0xff}, result)
+	require.Equal(t, []byte{0x89, 0x12}, result)
 
 	match, result = parse.BIT("BIT $12")
 	require.Equal(t, `BIT`, match)
