@@ -1,4 +1,4 @@
-module github.com/snarechops/assembler
+module github.com/snarechops/6502-assembler
 
 go 1.15
 

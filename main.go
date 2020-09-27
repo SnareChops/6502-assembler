@@ -6,7 +6,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/snarechops/assembler/parse"
+	"github.com/snarechops/6502-assembler/asm"
 )
 
 func check(err error) {
@@ -19,24 +19,21 @@ func main() {
 	// Process cli args
 	args := processArgs(os.Args)
 
-	// Load file
+	// Assemble file
+	data, err := asm.File(args.Input)
+	check(err)
+
+	// Create output file name
 	filename := path.Base(args.Input)
 	basename := strings.Replace(filename, path.Ext(args.Input), "", -1)
 	outputname := basename + ".bin"
 
-	file, err := os.Open(args.Input)
-	check(err)
-	defer file.Close()
-
-	// Parse file
-	data, err := parse.File(file)
-	check(err)
-
-	// Output binary
+	// Create binary file
 	output, err := os.Create(outputname)
 	check(err)
 	defer output.Close()
 
+	// Output to file
 	size, err := output.Write(data)
 	check(err)
 

@@ -3,13 +3,14 @@ package parse
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
 
-// File parses a file
-func File(file *os.File) ([]byte, error) {
-	scanner := bufio.NewScanner(file)
+// Parse parses a reader
+func Parse(reader io.Reader) ([]byte, error) {
+	scanner := bufio.NewScanner(reader)
 	data := []byte{}
 	for scanner.Scan() {
 		data = append(data, Line(scanner.Text(), uint16(len(data)))...)
@@ -40,7 +41,7 @@ func Line(inp string, pointer uint16) []byte {
 		if err != nil {
 			panic(err)
 		}
-		bytes, err := File(f)
+		bytes, err := Parse(f)
 		if err != nil {
 			panic(err)
 		}

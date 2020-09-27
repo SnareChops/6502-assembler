@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/snarechops/assembler/parse"
+	"github.com/snarechops/6502-assembler/parse"
 	"github.com/stretchr/testify/require"
 )
 

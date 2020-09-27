@@ -1,7 +1,7 @@
 package parse
 
 import (
-	"github.com/snarechops/assembler/lang"
+	"github.com/snarechops/6502-assembler/lang"
 )
 
 // Parser represents a parser function

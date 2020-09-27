@@ -3,7 +3,7 @@ package parse
 import (
 	"strconv"
 
-	"github.com/snarechops/assembler/conv"
+	"github.com/snarechops/6502-assembler/conv"
 )
 
 // Uint16 parses a uint16 literal
